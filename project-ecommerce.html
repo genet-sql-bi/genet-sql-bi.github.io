@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brazilian E-Commerce Analytics — Genet Tesfamichael</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white:      #FFFFFF;
+      --bg-soft:    #F7F6F4;
+      --ink:        #111111;
+      --ink-mid:    #555555;
+      --ink-light:  #999999;
+      --teal:       #0D7377;
+      --teal-light: #0D737715;
+      --border:     #E5E4E2;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 64px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--ink-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--teal); }
+
+    /* ── PROJECT HERO ── */
+    .project-hero {
+      padding-top: 64px;
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .project-hero-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 5vw 4rem;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      margin-bottom: 1.75rem;
+    }
+
+    .breadcrumb a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-tag {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: var(--teal-light);
+      padding: 0.25rem 0.65rem;
+      border-radius: 3px;
+    }
+
+    .project-hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+    }
+
+    .project-hero-lead {
+      font-size: 1.0625rem;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      max-width: 66ch;
+      margin-bottom: 2.5rem;
+    }
+
+    .project-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .project-meta-item {}
+
+    .project-meta-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 0.3rem;
+    }
+
+    .project-meta-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ── CONTENT ── */
+    .project-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 5vw;
+    }
+
+    .content-section {
+      margin-bottom: 4rem;
+    }
+
+    .content-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.75rem;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .content-section p {
+      font-size: 1rem;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .content-section p:last-child { margin-bottom: 0; }
+
+    /* ── BUSINESS QUESTIONS ── */
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .question-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.25rem 1.25rem 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .question-card:hover {
+      border-color: var(--teal);
+      box-shadow: 0 3px 16px rgba(13,115,119,0.07);
+    }
+
+    .question-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--border);
+      line-height: 1;
+      flex-shrink: 0;
+      min-width: 28px;
+    }
+
+    .question-text {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* ── TOOLS USED ── */
+    .tools-used {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.625rem;
+      margin-top: 1.25rem;
+    }
+
+    .tool-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      padding: 0.45rem 1rem;
+      border-radius: 100px;
+    }
+
+    /* ── WORKFLOW STEPS ── */
+    .workflow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .workflow-step {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    .workflow-step:last-child { border-bottom: none; }
+    .workflow-step:hover { background: var(--bg-soft); }
+
+    .step-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--teal);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── POWER BI EMBED SECTION ── */
+    .embed-section {
+      background: var(--bg-soft);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 5vw;
+    }
+
+    .embed-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .embed-inner h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.75rem;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+
+    .embed-inner p {
+      font-size: 0.9375rem;
+      color: var(--ink-mid);
+      margin-bottom: 2rem;
+    }
+
+    .powerbi-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 62%;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    }
+
+    .powerbi-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ── NOTEBOOK EMBED SECTION ── */
+    .notebook-section {
+      padding: 4rem 5vw;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .notebook-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.75rem;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .notebook-section > p {
+      font-size: 0.9375rem;
+      color: var(--ink-mid);
+      margin-top: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .notebook-frame-wrapper {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    }
+
+    .notebook-frame-wrapper iframe {
+      width: 100%;
+      height: 800px;
+      border: none;
+      display: block;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      padding: 1.5rem 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    footer a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--teal); }
+
+    /* ── FADE ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .questions-grid { grid-template-columns: 1fr; }
+      .project-meta-row { gap: 1.5rem; }
+    }
+
+    @media (max-width: 500px) {
+      .notebook-frame-wrapper iframe { height: 600px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="index.html">GT</a>
+    <a class="nav-back" href="index.html#projects">← All Projects</a>
+  </nav>
+
+  <!-- PROJECT HERO -->
+  <div class="project-hero">
+    <div class="project-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <a href="index.html#projects">Projects</a>
+        <span>›</span>
+        <span>Brazilian E-Commerce Analytics</span>
+      </div>
+      <div class="project-tags">
+        <span class="project-tag">SQL</span>
+        <span class="project-tag">Python</span>
+        <span class="project-tag">PostgreSQL</span>
+        <span class="project-tag">Power BI</span>
+        <span class="project-tag">Pandas</span>
+        <span class="project-tag">Matplotlib</span>
+      </div>
+      <h1>Brazilian E-Commerce Analytics</h1>
+      <p class="project-hero-lead">
+        A full-stack analysis of the Olist Brazilian e-commerce dataset — connecting PostgreSQL to Python in Google Colab, answering 10 business questions across sales, logistics, customer behavior, and product reviews, then visualizing the complete story in a live Power BI dashboard.
+      </p>
+      <div class="project-meta-row">
+        <div class="project-meta-item">
+          <p class="project-meta-label">Dataset</p>
+          <p class="project-meta-value">Olist (Brazilian E-Commerce)</p>
+        </div>
+        <div class="project-meta-item">
+          <p class="project-meta-label">Scale</p>
+          <p class="project-meta-value">100,000+ orders</p>
+        </div>
+        <div class="project-meta-item">
+          <p class="project-meta-label">Stack</p>
+          <p class="project-meta-value">PostgreSQL · Python · Power BI</p>
+        </div>
+        <div class="project-meta-item">
+          <p class="project-meta-label">Output</p>
+          <p class="project-meta-value">Interactive Dashboard + Notebook</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT CONTENT -->
+  <div class="project-content">
+
+    <!-- Overview -->
+    <div class="content-section fade-up">
+      <h2>Project Overview</h2>
+      <p>
+        This project takes a real-world e-commerce dataset through the complete analytics lifecycle: raw SQL queries in PostgreSQL, data processing and visualization in Python, and final dashboard delivery in Power BI. The Olist dataset contains transactional data across orders, customers, sellers, products, payments, reviews, and freight logistics from across Brazil.
+      </p>
+      <p>
+        The goal was to answer 10 concrete business questions that a real operations or strategy team would care about — not just explore the data, but generate actionable answers with supporting visualizations and clear methodology.
+      </p>
+    </div>
+
+    <!-- Business Questions -->
+    <div class="content-section fade-up">
+      <h2>10 Business Questions Answered</h2>
+      <div class="questions-grid">
+        <div class="question-card"><span class="question-num">1</span><span class="question-text">Which product categories drive the most sales?</span></div>
+        <div class="question-card"><span class="question-num">2</span><span class="question-text">Which states generate the highest revenue?</span></div>
+        <div class="question-card"><span class="question-num">3</span><span class="question-text">Who are the top-performing sellers?</span></div>
+        <div class="question-card"><span class="question-num">4</span><span class="question-text">What payment methods do customers prefer?</span></div>
+        <div class="question-card"><span class="question-num">5</span><span class="question-text">How does delivery performance compare against estimates?</span></div>
+        <div class="question-card"><span class="question-num">6</span><span class="question-text">What do review scores reveal about product quality?</span></div>
+        <div class="question-card"><span class="question-num">7</span><span class="question-text">What is the average order value across categories?</span></div>
+        <div class="question-card"><span class="question-num">8</span><span class="question-text">How are customers distributed geographically?</span></div>
+        <div class="question-card"><span class="question-num">9</span><span class="question-text">Which categories have the highest freight costs?</span></div>
+        <div class="question-card"><span class="question-num">10</span><span class="question-text">What are the economics of shipping relative to order value?</span></div>
+      </div>
+    </div>
+
+    <!-- Tools Used -->
+    <div class="content-section fade-up">
+      <h2>Tools & Technologies</h2>
+      <p>The project was built across four interconnected tools, each serving a distinct role in the analysis pipeline.</p>
+      <div class="tools-used">
+        <span class="tool-chip">🐘 PostgreSQL</span>
+        <span class="tool-chip">🐍 Python</span>
+        <span class="tool-chip">🐼 Pandas</span>
+        <span class="tool-chip">📊 Matplotlib</span>
+        <span class="tool-chip">☁️ Google Colab</span>
+        <span class="tool-chip">📈 Power BI</span>
+        <span class="tool-chip">🔗 SQLAlchemy</span>
+        <span class="tool-chip">🔌 psycopg2</span>
+      </div>
+    </div>
+
+    <!-- Workflow -->
+    <div class="content-section fade-up">
+      <h2>Project Workflow</h2>
+      <div class="workflow-steps">
+        <div class="workflow-step"><span class="step-num">1</span><span class="step-text">Connect PostgreSQL database to Google Colab via SQLAlchemy and psycopg2</span></div>
+        <div class="workflow-step"><span class="step-num">2</span><span class="step-text">Load all dataset tables (orders, customers, sellers, products, payments, reviews, freight) into Pandas DataFrames</span></div>
+        <div class="workflow-step"><span class="step-num">3</span><span class="step-text">Write SQL queries to answer each of the 10 business questions</span></div>
+        <div class="workflow-step"><span class="step-num">4</span><span class="step-text">Process and aggregate results using Python and Pandas</span></div>
+        <div class="workflow-step"><span class="step-num">5</span><span class="step-text">Build exploratory visualizations with Matplotlib to validate findings</span></div>
+        <div class="workflow-step"><span class="step-num">6</span><span class="step-text">Design and publish an interactive dashboard in Power BI for stakeholder delivery</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- POWER BI DASHBOARD -->
+  <div class="embed-section">
+    <div class="embed-inner">
+      <h2 class="fade-up">Live Power BI Dashboard</h2>
+      <p class="fade-up">Explore the interactive dashboard below. Filter by state, category, or seller to drill into the data.</p>
+      <div class="powerbi-wrapper fade-up">
+        <iframe
+          title="E-Commerce Reviews Analysis"
+          src="https://app.powerbi.com/view?r=eyJrIjoiMWU3OTNkNTEtYjQ0Mi00NjE4LWE4NzgtMWExMjQ4NjE2ZjE4IiwidCI6IjQxYmIxN2Y5LWE5NTktNGRjYS1iOTk5LTYyMzkwNDkwZjZkYSIsImMiOjJ9"
+          allowFullScreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTEBOOK EMBED -->
+  <div class="notebook-section">
+    <h2 class="fade-up">Python Notebook</h2>
+    <p class="fade-up">The full analysis notebook — including SQL queries, data transformations, and Matplotlib visualizations — is embedded below.</p>
+    <div class="notebook-frame-wrapper fade-up">
+      <iframe src="ecommerce-analysis.html" title="E-Commerce Dataset Analysis Notebook"></iframe>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="index.html">← Back to portfolio</a>
+    <span>Genet Tesfamichael · 2025</span>
+  </footer>
+
+  <script>
+    // ── FADE UP ON SCROLL ──
+    const fadeEls = document.querySelectorAll(".fade-up");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add("visible");
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    fadeEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
