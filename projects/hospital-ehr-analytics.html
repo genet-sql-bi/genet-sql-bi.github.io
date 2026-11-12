@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City Care Hospital Analytics | Genet Tesfamichael</title>
+<meta name="description" content="MySQL to Power BI for a five-hospital network: 10 data-quality checks, 22 business questions in SQL, and a 3-page report on patient flow, staffing and revenue.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<nav><div class="wrap">
+<div class="crumbs"><span data-portfolio-crumb><a href="#" data-portfolio>Portfolio</a> / </span><a href="../index.html">Projects</a> / <span>Hospital EHR Analytics</span></div>
+<a class="back" href="../index.html">← All projects</a>
+</div></nav>
+
+<header><div class="wrap">
+<div class="eyebrow">Patient Journey, Staffing &amp; Revenue · 2026</div>
+<h1>City Care Hospital <em>Analytics</em></h1>
+<p class="lede">An end-to-end healthcare analytics project: MySQL, SQL data-quality checks and analysis, and a 3-page Power BI report that answers the questions a hospital operations director asks every month. Where do patients wait? Are doctors used where demand is? Where does the money come from, and what is still unpaid?</p>
+<p class="headline">My data-quality checks showed the original sample <b>couldn't support department- or hospital-level analysis</b> (for example, 165 of 200 appointments were at a different hospital from their doctor). I fixed the keys and rebuilt the dataset; it now passes every key and reconciliation check with <b>0 mismatches</b>.</p>
+<div class="meta"><span class="tag">MySQL 8</span><span class="tag">SQL (CTEs, window functions)</span><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Data quality testing</span><span class="tag flag">Synthetic data</span></div>
+<div class="ctas">
+<a class="btn primary" href="#" data-dashboard="hospital-ehr-analytics" target="_blank" rel="noopener" hidden>View live dashboard ↗</a>
+<a class="btn ghost" href="https://github.com/genet-sql-bi/hospital-ehr-analytics" target="_blank" rel="noopener">View code on GitHub ↗</a>
+</div>
+</div></header>
+
+<section><div class="wrap"><div class="metrics">
+<div class="metric"><b>11</b><small>Table MySQL model with enforced keys</small></div><div class="metric"><b>1,000</b><small>Patients · 12 months</small></div><div class="metric"><b>4,845</b><small>Appointments</small></div><div class="metric"><b>825</b><small>Admissions</small></div><div class="metric"><b>$10.78M</b><small>Revenue analyzed</small></div><div class="metric"><b>22</b><small>Business questions in SQL</small></div>
+</div></div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>How I built it</h2><span class="num mono">01 / APPROACH</span></div>
+<p class="sec-intro">Each stage is a numbered script in the repository, so the whole project rebuilds from scratch in order.</p><div class="pipeline"><div class="step"><h3>Design the database</h3><p>11 tables with primary keys, foreign keys and indexes.</p><code>01_create_tables.sql</code></div><div class="step"><h3>Load the data</h3><p>CSV load with line-ending and NULL handling fixes.</p><code>02_load_data.sql</code></div><div class="step"><h3>Validate quality</h3><p>10 checks must return zero problems before analysis.</p><code>03_data_quality_checks.sql</code></div><div class="step"><h3>Answer the questions</h3><p>22 business questions answered in SQL, each with its finding.</p><code>04_analysis_queries.sql</code></div><div class="step"><h3>Report</h3><p>3-page Power BI report with a one-line insight under every title.</p><code>HospitalPowerBIDashboard.pbix</code></div></div>
+</div></section>
+<section id="findings"><div class="wrap">
+<div class="sec-head"><h2>Key findings</h2><span class="num mono">02 / RESULTS</span></div>
+<p class="sec-intro">The data is synthetic, so these figures show the analysis method rather than a real hospital's performance. Each "so what" is the action the finding would support on real data.</p><div class="table-wrap"><table><thead><tr><th>Area</th><th>Finding</th><th>So what</th></tr></thead><tbody><tr><td>Access</td><td>Patients wait <b>1.5×</b> their consultation time; follow-ups wait <b>2×</b> their 13-minute consult</td><td>Follow-up slots are too short for the queue in front of them</td></tr><tr><td>Access</td><td><b>1 in 8</b> booked slots is lost (8.2% no-show, 4.0% cancelled); follow-ups no-show more (9.7% vs 6.4%)</td><td>Target reminders at follow-up visits</td></tr><tr><td>Capacity</td><td>General Medicine handles <b>44%</b> of planned clinic visits and has the longest planned wait (<b>30 min</b>)</td><td>First candidate for extra clinic sessions</td></tr><tr><td>Staffing</td><td>Orthopedics' 2 doctors carry <b>251 appointments each</b>, 2× the clinic average of 121; Dermatology runs at <b>61%</b> slot use</td><td>Capacity exists, but not where demand is</td></tr><tr><td>Inpatient</td><td>Fracture, Covid and Cancer use <b>60%</b> of all bed days; Fracture leads on volume, Cancer on stay length (8.2 days)</td><td>Bed planning should follow these three</td></tr><tr><td>Quality</td><td><b>14.2%</b> of admissions are 30-day readmissions, led by Cancer (21%), Diabetes (20%) and Hypertension (20%)</td><td>Chronic-condition discharge follow-up is the lever</td></tr><tr><td>Revenue</td><td>Room (<b>57%</b>) and Surgery (<b>26%</b>) charges make up 83% of $10.78M revenue</td><td>Revenue tracks length of stay; revenue per bed day is flat (~$2.8K) across stay lengths</td></tr><tr><td>Cash</td><td><b>$1.60M (14.9%)</b> is unpaid, concentrated in the last two months and among self-pay patients (<b>45%</b> pending vs 10–17% for insurers)</td><td>Self-pay collections need an earlier payment plan</td></tr></tbody></table></div>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>What the checks found</h2><span class="num mono">03 / DATA QUALITY</span></div>
+<p class="sec-intro">The project started from a 100-patient sample. Before building any visuals, I ran 10 checks (coverage, category values, admission logic, billing reconciliation, ranges, duplicates, cross-table consistency, overlapping stays). The sample failed badly:</p>
+<div class="table-wrap"><table><thead><tr><th>Check</th><th>Mismatches in the original sample</th></tr></thead><tbody>
+<tr><td>Appointment hospital vs its doctor's hospital</td><td><b>165 of 200</b></td></tr>
+<tr><td>Admission department vs its doctor's department</td><td><b>75 of 80</b></td></tr>
+<tr><td>Admission hospital vs its department's hospital</td><td><b>60 of 80</b></td></tr>
+<tr><td>Bill patient vs its admission's patient</td><td><b>79 of 80</b></td></tr>
+<tr><td>Tables covering different periods</td><td>Labs ended in April, schedules in February</td></tr>
+</tbody></table></div>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>How I fixed it</h2><span class="num mono">04 / VALIDATION</span></div>
+<ul class="checks"><li><b>Source-of-truth rule</b> set from the organization: Department → Hospital, Doctor → Department, Encounter → Doctor, Bill → Admission</li><li><b>Keys repaired</b>, then the data regenerated with those rules enforced, scaled to 1,000 patients over 12 months</li><li><b>0 mismatches</b> now on every key and reconciliation check; every bill reconciles to the cent</li><li><b>13 overlapping stays</b> flagged (check 10) and excluded from the readmission analysis</li><li><b>Load bugs fixed:</b> Windows line endings silently breaking text matches, and blanks loading as 0 instead of NULL</li></ul><p class="note">The 1,000-patient dataset was generated with an AI-assisted Python script to my specification, using published clinical and payer norms. Every assumption is listed in the script's CONFIG section.</p>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>The dashboard</h2><span class="num mono">05 / POWER BI</span></div>
+<p class="sec-intro">One navy for data, one blue for the item to notice, a one-line insight under every page title, and slicers for month, hospital, department and diagnosis.</p><div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true" data-target="g0">Patient Journey</button><button class="tab" role="tab" aria-selected="false" data-target="g1">Doctor Staffing</button><button class="tab" role="tab" aria-selected="false" data-target="g2">Revenue &amp; Capacity</button></div><figure class="shot" id="g0"><a href="https://raw.githubusercontent.com/genet-sql-bi/hospital-ehr-analytics/main/images/patient_journey.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/hospital-ehr-analytics/main/images/patient_journey.png" alt="Patient Journey dashboard page"></a><figcaption><b>Patient Journey:</b> Waits vs consultation time, abnormal labs, admissions by ward, monthly trends and length of stay by diagnosis.</figcaption></figure><figure class="shot" id="g1" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/hospital-ehr-analytics/main/images/doctor_staffing.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/hospital-ehr-analytics/main/images/doctor_staffing.png" alt="Doctor Staffing dashboard page" loading="lazy"></a><figcaption><b>Doctor Staffing:</b> Appointments and slot utilization per doctor, emergency duty share, appointments per doctor by department, and experience vs volume.</figcaption></figure><figure class="shot" id="g2" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/hospital-ehr-analytics/main/images/revenue_capacity.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/hospital-ehr-analytics/main/images/revenue_capacity.png" alt="Revenue & Capacity dashboard page" loading="lazy"></a><figcaption><b>Revenue &amp; Capacity:</b> Charge mix, revenue by payer, pending bills by hospital and month, and revenue per bed day by ward.</figcaption></figure>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>Recommendations</h2><span class="num mono">06 / ACTIONS</span></div>
+<div class="cards"><div class="card"><div class="k">Access</div><h3>Lengthen follow-up slots</h3><p>Follow-ups wait twice as long as they're seen. Resizing these slots shortens the queue without adding staff.</p></div><div class="card"><div class="k">Access</div><h3>Remind follow-up patients</h3><p>Follow-ups no-show at 9.7% vs 6.4%. Targeted reminders recover booked slots that are currently lost.</p></div><div class="card"><div class="k">Staffing</div><h3>Rebalance clinic capacity</h3><p>Shift spare sessions from low-use departments like Dermatology toward Orthopedics and General Medicine.</p></div><div class="card"><div class="k">Inpatient</div><h3>Plan beds around three diagnoses</h3><p>Fracture, Covid and Cancer drive 60% of bed days, so bed forecasting should start with them.</p></div><div class="card"><div class="k">Quality</div><h3>Strengthen chronic discharge follow-up</h3><p>Cancer, Diabetes and Hypertension lead 30-day readmissions. Post-discharge follow-up is the clearest lever.</p></div><div class="card"><div class="k">Cash</div><h3>Earlier self-pay payment plans</h3><p>45% of self-pay revenue is pending. Payment plans at admission would reduce the unpaid balance.</p></div></div>
+</div></section>
+<section><div class="wrap"><div class="pnav">
+<a href="cms-supplier-acceptance.html"><small>← Previous project</small><b>Medicare Supplier Acceptance</b></a>
+<a class="next" href="olist-ecommerce.html"><small>Next project →</small><b>Olist E-Commerce Analytics</b></a>
+</div></div></section>
+
+<footer><div class="wrap">
+<span>© 2026 Genet Tesfamichael · SQL &amp; Power BI Developer</span>
+<a href="#" data-portfolio>← Back to portfolio</a>
+</div></footer>
+<script src="../assets/links.js"></script>
+</body>
+</html>

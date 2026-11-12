@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medicare Supplier Assignment Acceptance | Genet Tesfamichael</title>
+<meta name="description" content="Who accepts Medicare assignment and where? Data-quality review, a calibrated model at 89.8% accuracy, and a two-page Power BI dashboard with a live threshold selector.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<nav><div class="wrap">
+<div class="crumbs"><span data-portfolio-crumb><a href="#" data-portfolio>Portfolio</a> / </span><a href="../index.html">Projects</a> / <span>Medicare Supplier Acceptance</span></div>
+<a class="back" href="../index.html">← All projects</a>
+</div></nav>
+
+<header><div class="wrap">
+<div class="eyebrow">Analysis &amp; Prediction · 2026</div>
+<h1>Medicare Supplier <em>Assignment Acceptance</em></h1>
+<p class="lede">Who accepts Medicare assignment, where, and how accurately can we predict it? An end-to-end project on the CMS Medical Equipment Suppliers directory: data-quality review, cleaning, feature engineering, a calibrated classification model, automated tests and a two-page Power BI dashboard.</p>
+<p class="headline">Nearly half of Medicare equipment suppliers <b>(27,707 of 56,898)</b> don't accept assignment, so patients can be charged more than the Medicare-approved amount. Acceptance varies sharply by provider type and enrollment cohort, so outreach should be targeted, not blanket.</p>
+<div class="meta"><span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">Jupyter</span><span class="tag">Power BI (PBIP)</span><span class="tag">DAX</span><span class="tag">pytest</span><span class="tag flag">Public CMS data</span></div>
+<div class="ctas">
+<a class="btn primary" href="#" data-dashboard="cms-supplier-acceptance" target="_blank" rel="noopener" hidden>View live dashboard ↗</a>
+<a class="btn ghost" href="https://github.com/genet-sql-bi/cms-supplier-acceptance-analysis" target="_blank" rel="noopener">View code on GitHub ↗</a>
+</div>
+</div></header>
+
+<section><div class="wrap"><div class="metrics">
+<div class="metric"><b>56,898</b><small>Suppliers analyzed</small></div><div class="metric"><b>51.3%</b><small>Accept assignment</small></div><div class="metric"><b>89.8%</b><small>Model accuracy (vs 51.3% baseline)</small></div><div class="metric"><b>94.8%</b><small>Precision at 0.70 threshold</small></div><div class="metric"><b>165</b><small>Engineered features</small></div><div class="metric"><b>8</b><small>Automated pipeline tests</small></div>
+</div></div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>How I built it</h2><span class="num mono">01 / APPROACH</span></div>
+<p class="sec-intro">Seven numbered notebooks run in order, from the raw CMS extract to the Power BI dashboard.</p><div class="pipeline"><div class="step"><h3>Profile the data</h3><p>Raw extract audited: 56,898 rows, 17 columns.</p><code>01_data_quality</code></div><div class="step"><h3>Clean &amp; flag</h3><p>Issues cleaned and flagged, not deleted; 13 columns kept.</p><code>02_data_cleaning</code></div><div class="step"><h3>Explore</h3><p>Acceptance by state, provider type and enrollment cohort.</p><code>03_exploratory_analysis</code></div><div class="step"><h3>Engineer features</h3><p>165 features; stratified 80/20 split.</p><code>04_feature_engineering</code></div><div class="step"><h3>Train &amp; select</h3><p>6 models compared, selected on generalization.</p><code>05_model_training</code></div><div class="step"><h3>Evaluate</h3><p>Thresholds, calibration, feature importance, model card.</p><code>06_model_evaluation</code></div><div class="step"><h3>Score &amp; report</h3><p>All suppliers scored and exported to Power BI.</p><code>07_powerbi_output</code></div></div>
+</div></section>
+<section id="findings"><div class="wrap">
+<div class="sec-head"><h2>Key findings</h2><span class="num mono">02 / RESULTS</span></div>
+<div class="table-wrap"><table><thead><tr><th>Finding</th><th>Value</th></tr></thead><tbody><tr><td>Overall acceptance</td><td><b>51.3%</b> (29,191 accept · 27,707 don't)</td></tr><tr><td>Lowest state (100+ suppliers)</td><td><b>Hawaii 37.9%</b></td></tr><tr><td>Lowest / highest provider type</td><td><b>Opticians 22.6%</b> · <b>Optometrists 94.7%</b></td></tr><tr><td>Range by enrollment cohort</td><td><b>17% (2019)</b> to <b>98% (2022)</b></td></tr><tr><td>Model accuracy on unseen suppliers</td><td><b>89.8%</b> vs 51.3% baseline</td></tr><tr><td>Precision at the 0.70 threshold</td><td><b>94.8%</b></td></tr><tr><td>Largest state calibration gap</td><td><b>3.3 pts</b> (RI)</td></tr></tbody></table></div>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>Why HistGradientBoosting</h2><span class="num mono">03 / MODEL</span></div>
+<p class="sec-intro">Six models were compared on the same split. I chose on <b>generalization</b>, not top-line score: HistGradientBoosting matches the leaders on ROC-AUC with a train–test gap about seven times smaller.</p>
+<div class="table-wrap"><table><thead><tr><th>Model</th><th>Accuracy</th><th>ROC-AUC</th><th>Train–test gap</th></tr></thead><tbody>
+<tr><td>Random Forest</td><td>0.913</td><td>0.978</td><td>0.087</td></tr>
+<tr><td>Extra Trees</td><td>0.907</td><td>0.976</td><td>0.093</td></tr>
+<tr class="pick"><td>HistGradientBoosting ✓</td><td><b>0.898</b></td><td><b>0.971</b></td><td><b>0.013</b></td></tr>
+<tr><td>Gradient Boosting</td><td>0.869</td><td>0.952</td><td>0.004</td></tr>
+<tr><td>Decision Tree</td><td>0.891</td><td>0.891</td><td>0.109</td></tr>
+<tr><td>Logistic Regression</td><td>0.824</td><td>0.903</td><td>0.000</td></tr>
+</tbody></table></div>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>Data quality &amp; rigor</h2><span class="num mono">04 / VALIDATION</span></div>
+<p class="sec-intro">Decisions that protect the results from bad data and over-claiming:</p><ul class="checks"><li><b>Flag, don't delete:</b> 5,390 suspected placeholder dates kept and flagged; deleting them would remove 9% of suppliers and bias results (they accept less: 43.6% vs 52.1%)</li><li><b>Leakage review</b> on flagged features before trusting the model</li><li><b>Calibration by risk band</b> within ±2.6 pts, so probabilities can be used directly for ranking</li><li><b>Cohort effect reported as a hypothesis</b>, not a cause: top feature tenure_days has Spearman ρ = −0.08</li><li><b>8 automated tests</b> on pipeline output: row counts, unique IDs, probability ranges, split sizes, headline metrics</li><li><b>Row reconciliation</b> documented between the July and September CMS extracts</li></ul>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>The dashboard</h2><span class="num mono">05 / POWER BI</span></div>
+<p class="sec-intro">Built as a PBIP project, so the report and model are version-controlled as text. Techniques include a threshold parameter driving TP/FP/FN/TN measures, a SWITCH-based map metric selector, Top N limited to states with 100+ suppliers, and alt text on every visual.</p><div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true" data-target="g0">Executive Overview</button><button class="tab" role="tab" aria-selected="false" data-target="g1">Model Performance</button></div><figure class="shot" id="g0"><a href="https://raw.githubusercontent.com/genet-sql-bi/cms-supplier-acceptance-analysis/main/reports/figures/executive_overview.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/cms-supplier-acceptance-analysis/main/reports/figures/executive_overview.png" alt="Executive Overview dashboard page"></a><figcaption><b>Executive Overview:</b> KPI cards with dynamic sub-labels, acceptance by cohort, lowest-acceptance states, and a state map with an actual / predicted / calibration-gap switch.</figcaption></figure><figure class="shot" id="g1" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/cms-supplier-acceptance-analysis/main/reports/figures/model_performance.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/cms-supplier-acceptance-analysis/main/reports/figures/model_performance.png" alt="Model Performance dashboard page" loading="lazy"></a><figcaption><b>Model Performance:</b> A decision-threshold selector drives a live confusion matrix, precision-vs-recall curve and calibration by risk band.</figcaption></figure>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>Business cases</h2><span class="num mono">06 / ACTIONS</span></div>
+<div class="cards"><div class="card"><div class="k">Case 1</div><h3>Raise acceptance where it's lowest</h3><p>Target the <b>27,707</b> non-accepting suppliers, starting with the lowest-acceptance states and provider types.</p></div><div class="card"><div class="k">Case 2</div><h3>Convert suppliers who look like acceptors</h3><p>At the 0.70 threshold, 263 test-set suppliers are predicted to accept but don't, about <b>1,315</b> directory-wide. They resemble acceptors, so they're the most likely to convert.</p></div><div class="card"><div class="k">Why predict it</div><h3>Score suppliers before their status is known</h3><p>The model ranks new suppliers by how closely they resemble acceptors. The value is in the ranking and the gaps, not the prediction itself.</p></div></div>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>Limitations</h2><span class="num mono">07 / LIMITS</span></div>
+<p class="sec-intro">Stated up front, so the results aren't read as more than they are.</p><ul class="checks"><li>Single snapshot (September 2026): no trends or time forecasts</li><li>Association, not causation: the model can't say why a supplier declines</li><li>Over-predicts the 2020, 2021 and 2026 enrollment cohorts (+15 to +18 pts)</li><li>Directory data reflects what suppliers state, not actual billing behavior</li></ul>
+</div></section>
+<section><div class="wrap"><div class="pnav">
+<a href="sales-data-warehouse.html"><small>← Previous project</small><b>Sales Data Warehouse</b></a>
+<a class="next" href="hospital-ehr-analytics.html"><small>Next project →</small><b>Hospital EHR Analytics</b></a>
+</div></div></section>
+
+<footer><div class="wrap">
+<span>© 2026 Genet Tesfamichael · SQL &amp; Power BI Developer</span>
+<a href="#" data-portfolio>← Back to portfolio</a>
+</div></footer>
+<script src="../assets/links.js"></script>
+</body>
+</html>

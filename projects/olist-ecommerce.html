@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olist Brazilian E-Commerce Analytics | Genet Tesfamichael</title>
+<meta name="description" content="~100K orders across PostgreSQL, SQL, Python and Power BI. Headline: late deliveries drop review scores from 4.29 to 2.57.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<nav><div class="wrap">
+<div class="crumbs"><span data-portfolio-crumb><a href="#" data-portfolio>Portfolio</a> / </span><a href="../index.html">Projects</a> / <span>Olist E-Commerce Analytics</span></div>
+<a class="back" href="../index.html">← All projects</a>
+</div></nav>
+
+<header><div class="wrap">
+<div class="eyebrow">Olist Dataset · PostgreSQL to Power BI</div>
+<h1>Brazilian E-Commerce <em>Analytics</em></h1>
+<p class="lede">An end-to-end analysis of the Olist Brazilian E-Commerce dataset (~100K orders, 2016–2018). The data lives in PostgreSQL, is analyzed in SQL and Python, then modeled and cleaned in Power Query and presented in a four-page Power BI dashboard covering Sales, Customers, Logistics and Reviews.</p>
+<p class="headline">Late deliveries cut the average review score from <b>4.29 to 2.57</b>. Logistics performance directly drives customer satisfaction.</p>
+<div class="meta"><span class="tag">PostgreSQL</span><span class="tag">SQL</span><span class="tag">Python (pandas, SQLAlchemy)</span><span class="tag">Power Query</span><span class="tag">DAX</span><span class="tag">Power BI</span><span class="tag">Azure Maps</span><span class="tag flag">Public Kaggle data</span></div>
+<div class="ctas">
+<a class="btn primary" href="#" data-dashboard="olist-ecommerce" target="_blank" rel="noopener" hidden>View live dashboard ↗</a>
+<a class="btn ghost" href="https://github.com/genet-sql-bi/olist-ecommerce-powerbi-dashboard" target="_blank" rel="noopener">View code on GitHub ↗</a>
+</div>
+</div></header>
+
+<section><div class="wrap"><div class="metrics">
+<div class="metric"><b>R$ 16.0M</b><small>Total revenue</small></div><div class="metric"><b>99K</b><small>Orders</small></div><div class="metric"><b>96.1K</b><small>Customers in 27 states</small></div><div class="metric"><b>12.5 days</b><small>Average delivery time</small></div><div class="metric"><b>92%</b><small>Delivered on time</small></div><div class="metric"><b>4.1</b><small>Average review score</small></div>
+</div></div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>How I built it</h2><span class="num mono">01 / APPROACH</span></div>
+<p class="sec-intro">PostgreSQL for storage, SQL and Python for analysis, Power BI for the interactive dashboard.</p><div class="pipeline"><div class="step"><h3>Store</h3><p>9 Olist tables loaded into a PostgreSQL 18 database.</p><code>sql/olist_schema.sql</code></div><div class="step"><h3>Analyze in SQL</h3><p>7 queries reproduce the key findings, including a retention CTE.</p><code>sql/olist_analysis.sql</code></div><div class="step"><h3>Analyze in Python</h3><p>10 business questions with pandas and Matplotlib, connected via SQLAlchemy.</p><code>python/olist_analysis.ipynb</code></div><div class="step"><h3>Model</h3><p>Power Query cleanup, fact/dimension relationships, a Date table and a measures table.</p><code>Power Query</code></div><div class="step"><h3>Report</h3><p>Four-page interactive dashboard with synced slicers.</p><code>Olist_Dashboard.pbix</code></div></div>
+</div></section>
+<section id="findings"><div class="wrap">
+<div class="sec-head"><h2>Key findings</h2><span class="num mono">02 / RESULTS</span></div>
+<div class="table-wrap"><table><thead><tr><th>Area</th><th>Finding</th></tr></thead><tbody><tr><td>Sales</td><td>Steady growth through 2017, peaking in <b>November 2017</b> (Black Friday); average order value R$ 161</td></tr><tr><td>Sales</td><td><b>São Paulo</b> generates about R$ 6.0M, nearly 3× the next state (RJ, R$ 2.1M); credit card is ~78% of payment value</td></tr><tr><td>Customers</td><td><b>1.03 orders per customer</b>: about 97% never order again, so retention is the biggest growth opportunity</td></tr><tr><td>Logistics</td><td>Northern states (RR, AP, AM) average <b>25–29 days</b>, about 3× slower than SP (9 days)</td></tr><tr><td>Logistics</td><td>Delivery times improved sharply in 2018, from ~17 days (Feb–Mar) to ~8 days (Aug)</td></tr><tr><td>Reviews</td><td>On-time orders score <b>4.29</b>, late orders <b>2.57</b>, undelivered <b>1.77</b>; 14.7% of reviews are 1–2 stars</td></tr></tbody></table></div>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>DAX highlights</h2><span class="num mono">03 / TECHNIQUE</span></div>
+<p class="sec-intro">Three measures that do the analytical work behind the dashboard:</p>
+<div class="cards">
+<div class="card"><div class="k">Calculated column</div><h3>Delivery status</h3><p>Classifies each order as On Time, Late or Not Delivered by comparing delivered vs estimated dates. This powers the headline review-score comparison.</p></div>
+<div class="card"><div class="k">Measure</div><h3>Dynamic highlight color</h3><p>Uses <b>MAXX over ALLSELECTED</b> to color the top category green and the rest gray, updating with every slicer.</p></div>
+<div class="card"><div class="k">Measure</div><h3>Minimum-sample rating</h3><p>Excludes categories with fewer than <b>100 reviews</b> before ranking, so small categories can't top the list by chance.</p></div>
+</div>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>Design choices</h2><span class="num mono">04 / VALIDATION</span></div>
+<ul class="checks"><li><b>Consistent color logic:</b> green for the top item, red for problems, gray for everything else</li><li><b>Honest axes:</b> the delivery trend starts at 0, so changes aren't exaggerated</li><li><b>Clear revenue definitions:</b> total revenue uses payment value (incl. freight); category revenue uses item price</li><li><b>Brazilian currency (R$)</b> throughout, since all values are in BRL</li></ul>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>The dashboard</h2><span class="num mono">05 / POWER BI</span></div>
+<p class="sec-intro">Four pages, each answering one business area, with synced slicers across the report.</p><div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true" data-target="g0">Sales Overview</button><button class="tab" role="tab" aria-selected="false" data-target="g1">Customers</button><button class="tab" role="tab" aria-selected="false" data-target="g2">Logistics</button><button class="tab" role="tab" aria-selected="false" data-target="g3">Reviews</button></div><figure class="shot" id="g0"><a href="https://raw.githubusercontent.com/genet-sql-bi/olist-ecommerce-powerbi-dashboard/main/screenshots/sales_overview.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/olist-ecommerce-powerbi-dashboard/main/screenshots/sales_overview.png" alt="Sales Overview dashboard page"></a><figcaption><b>Sales Overview:</b> Revenue, orders and customers, monthly trend, top states, payment methods and top categories.</figcaption></figure><figure class="shot" id="g1" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/olist-ecommerce-powerbi-dashboard/main/screenshots/customers.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/olist-ecommerce-powerbi-dashboard/main/screenshots/customers.png" alt="Customers dashboard page" loading="lazy"></a><figcaption><b>Customers:</b> Customer distribution across 27 states and 4,119 cities on an Azure Map, plus repeat-purchase behavior.</figcaption></figure><figure class="shot" id="g2" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/olist-ecommerce-powerbi-dashboard/main/screenshots/logistics.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/olist-ecommerce-powerbi-dashboard/main/screenshots/logistics.png" alt="Logistics dashboard page" loading="lazy"></a><figcaption><b>Logistics:</b> Delivery time by state, on-time rate, trend over time and shipping cost by category.</figcaption></figure><figure class="shot" id="g3" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/olist-ecommerce-powerbi-dashboard/main/screenshots/reviews.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/olist-ecommerce-powerbi-dashboard/main/screenshots/reviews.png" alt="Reviews dashboard page" loading="lazy"></a><figcaption><b>Reviews:</b> Review scores by delivery status and top-rated categories (100+ reviews only).</figcaption></figure>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>What the data points to</h2><span class="num mono">06 / ACTIONS</span></div>
+<div class="cards"><div class="card"><div class="k">Customers</div><h3>Retention first</h3><p>About 97% of customers never place a second order. Repeat purchases are the biggest growth opportunity.</p></div><div class="card"><div class="k">Logistics</div><h3>Protect on-time delivery</h3><p>Late orders score 2.57 vs 4.29 on time, so delivery performance is a direct lever on satisfaction.</p></div><div class="card"><div class="k">Logistics</div><h3>Close the northern gap</h3><p>RR, AP and AM wait 25–29 days, about 3× longer than São Paulo.</p></div></div>
+</div></section>
+<section><div class="wrap"><div class="pnav">
+<a href="hospital-ehr-analytics.html"><small>← Previous project</small><b>Hospital EHR Analytics</b></a>
+<a class="next" href="sales-data-warehouse.html"><small>Next project →</small><b>Sales Data Warehouse</b></a>
+</div></div></section>
+
+<footer><div class="wrap">
+<span>© 2026 Genet Tesfamichael · SQL &amp; Power BI Developer</span>
+<a href="#" data-portfolio>← Back to portfolio</a>
+</div></footer>
+<script src="../assets/links.js"></script>
+</body>
+</html>

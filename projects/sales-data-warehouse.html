@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Data Warehouse & Analytics | Genet Tesfamichael</title>
+<meta name="description" content="Bronze, silver, gold warehouse in SQL Server with SCD Type 2, transaction-safe nightly loads, ETL logging, RFM segmentation and a Power BI dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<nav><div class="wrap">
+<div class="crumbs"><span data-portfolio-crumb><a href="#" data-portfolio>Portfolio</a> / </span><a href="../index.html">Projects</a> / <span>Sales Data Warehouse</span></div>
+<a class="back" href="../index.html">← All projects</a>
+</div></nav>
+
+<header><div class="wrap">
+<div class="eyebrow">SQL Server · Medallion Architecture</div>
+<h1>Sales Data Warehouse <em>&amp; Analytics</em></h1>
+<p class="lede">An end-to-end sales analytics platform: a SQL Server data warehouse (bronze, silver, gold) loaded nightly from ERP and CRM source systems, a star schema with full product history, analytical SQL and a three-page Power BI dashboard.</p>
+<p class="headline">Keeping product history (SCD Type 2) changed the margin story: in 2012 the true margin was <b>42.0%</b>, not the <b>35.2%</b> you get by costing every past sale at today's price.</p>
+<div class="meta"><span class="tag">SQL Server</span><span class="tag">T-SQL</span><span class="tag">SQL Server Agent</span><span class="tag">SSMS</span><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Draw.io</span><span class="tag flag">Medallion architecture</span></div>
+<div class="ctas">
+<a class="btn primary" href="#" data-dashboard="sales-data-warehouse" target="_blank" rel="noopener" hidden>View live dashboard ↗</a>
+<a class="btn ghost" href="https://github.com/genet-sql-bi/sql-data-warehouse-project1" target="_blank" rel="noopener">View code on GitHub ↗</a>
+</div>
+</div></header>
+
+<section><div class="wrap"><div class="metrics">
+<div class="metric"><b>3</b><small>Layers: bronze, silver, gold</small></div><div class="metric"><b>2</b><small>Source systems (ERP + CRM)</small></div><div class="metric"><b>77</b><small>Products with cost history</small></div><div class="metric"><b>7</b><small>Business analyses in SQL</small></div><div class="metric"><b>77%</b><small>Revenue from repeat customers</small></div><div class="metric"><b>2:00 AM</b><small>Automated nightly load</small></div>
+</div></div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>How I built it</h2><span class="num mono">01 / APPROACH</span></div>
+<p class="sec-intro">A medallion architecture where each layer loads safely and every run is logged.</p><div class="pipeline"><div class="step"><h3>Bronze</h3><p>Raw CSVs loaded as-is with BULK INSERT, in one transaction.</p><code>scripts/bronze</code></div><div class="step"><h3>Silver</h3><p>Cleansed, standardized data with derived columns.</p><code>scripts/silver</code></div><div class="step"><h3>Gold</h3><p>Star-schema views with an SCD Type 2 product dimension and an RFM view.</p><code>scripts/gold</code></div><div class="step"><h3>Automate</h3><p>SQL Server Agent runs bronze then silver nightly; stops if bronze fails.</p><code>scripts/automation</code></div><div class="step"><h3>Analyze &amp; report</h3><p>Seven SQL analyses with window functions, and a 3-page Power BI dashboard.</p><code>analytics/ · powerbi/</code></div></div>
+</div></section>
+<section id="findings"><div class="wrap">
+<div class="sec-head"><h2>Key findings</h2><span class="num mono">02 / RESULTS</span></div>
+<p class="sec-intro">Margin by year, costing each sale at the product cost valid on the order date vs today's cost:</p><div class="table-wrap"><table><thead><tr><th>Year</th><th>Margin (cost at time of sale)</th><th>Margin (today's cost)</th><th>Cost difference</th></tr></thead><tbody><tr><td>2011</td><td>40.2%</td><td>39.9%</td><td>$22K</td></tr><tr><td>2012</td><td><b>42.0%</b></td><td><b>35.2%</b></td><td><b>$396K</b></td></tr><tr><td>2013</td><td>43.1%</td><td>41.4%</td><td>$286K</td></tr></tbody></table></div><div class="cards" style="margin-top:24px">
+<div class="card"><div class="k">Customers · RFM</div><h3>Repeat customers drive revenue</h3><p>Customers who ordered more than once are <b>37%</b> of the base but bring in <b>77%</b> of revenue. The At Risk group is 11% of customers and 27% of revenue, so that's where I'd focus retention first.</p></div>
+<div class="card"><div class="k">Method</div><h3>Fixing RFM frequency scoring</h3><p>63% of customers ordered once, so NTILE split identical customers into different groups at random. I switched to fixed thresholds (1, 2, 3+ orders), which made the segments much cleaner.</p></div>
+<div class="card"><div class="k">Business</div><h3>From bike shop to broader retailer</h3><p>Accessories and Clothing first appear in late 2012. Sales nearly tripled in 2013 ($5.8M to $16.3M), with bikes still about 94% of revenue.</p></div>
+</div>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>Engineering decisions</h2><span class="num mono">03 / RELIABILITY</span></div>
+<div class="cards">
+<div class="card"><div class="k">History</div><h3>SCD Type 2 for products</h3><p>Every product version is kept with a validity range, and each sale joins to the version valid on its order date. A quality check confirms every sale matches exactly one version.</p></div>
+<div class="card"><div class="k">Safety</div><h3>One transaction per layer</h3><p>Each load runs with <b>SET XACT_ABORT ON</b>, so a failure rolls the whole layer back. Tested by forcing a failure: every table kept its previous rows.</p></div>
+<div class="card"><div class="k">Quality gate</div><h3>Fail on empty loads</h3><p>An empty source file loads 0 rows without any error, so each table checks its row count and treats 0 as a failure.</p></div>
+<div class="card"><div class="k">Observability</div><h3>Log to a table and re-throw</h3><p><b>etl.load_log</b> keeps rows, duration, status and errors. Failures are logged after rollback and re-thrown so the Agent job stops.</p></div>
+<div class="card"><div class="k">Design</div><h3>Gold as views</h3><p>Views keep gold in sync with silver at this size. At larger volumes I'd materialize gold as indexed tables with stable surrogate keys.</p></div>
+<div class="card"><div class="k">Data</div><h3>Flag, don't delete</h3><p>15 customers born before 1924 are flagged for source review, not removed. Only impossible future birthdates are set to NULL.</p></div>
+</div>
+</div></section>
+<section><div class="wrap">
+<div class="sec-head"><h2>The dashboard</h2><span class="num mono">04 / POWER BI</span></div>
+<p class="sec-intro">Three dashboard pages on the gold layer, plus the architecture diagrams.</p><div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true" data-target="g0">Executive Overview</button><button class="tab" role="tab" aria-selected="false" data-target="g1">Customers</button><button class="tab" role="tab" aria-selected="false" data-target="g2">Products &amp; Margin</button><button class="tab" role="tab" aria-selected="false" data-target="g3">Data Flow</button><button class="tab" role="tab" aria-selected="false" data-target="g4">Data Model</button></div><figure class="shot" id="g0"><a href="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/dashboard_overview.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/dashboard_overview.png" alt="Executive Overview dashboard page"></a><figcaption><b>Executive Overview:</b> Sales, margin and trend KPIs built on the gold layer.</figcaption></figure><figure class="shot" id="g1" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/dashboard_customers.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/dashboard_customers.png" alt="Customers dashboard page" loading="lazy"></a><figcaption><b>Customers:</b> RFM customer segments and their share of revenue.</figcaption></figure><figure class="shot" id="g2" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/dashboard_margin.png" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/dashboard_margin.png" alt="Products & Margin dashboard page" loading="lazy"></a><figcaption><b>Products &amp; Margin:</b> True margin at historical cost vs margin at current cost.</figcaption></figure><figure class="shot" id="g3" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/Data%20Flow%20(data%20Lineage).PNG" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/Data%20Flow%20(data%20Lineage).PNG" alt="Data Flow dashboard page" loading="lazy"></a><figcaption><b>Data Flow:</b> Lineage from ERP and CRM sources through bronze, silver and gold.</figcaption></figure><figure class="shot" id="g4" hidden><a href="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/SalesDataModel.PNG" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/genet-sql-bi/sql-data-warehouse-project1/main/docs/SalesDataModel.PNG" alt="Data Model dashboard page" loading="lazy"></a><figcaption><b>Data Model:</b> Gold-layer star schema.</figcaption></figure>
+</div></section>
+<section><div class="wrap"><p class="note"><b>Acknowledgment:</b> Based on Data With Baraa's open-source <a href="https://github.com/DataWithBaraa/sql-data-warehouse-project" target="_blank" rel="noopener">SQL Data Warehouse project</a>, which provided the source data and the initial bronze, silver and gold structure. I extended it with an SCD Type 2 product dimension, transaction-safe loads with a data quality gate, ETL logging and error handling, a nightly SQL Server Agent job, automated data quality checks, RFM segmentation, historical margin analysis and the Power BI dashboard.</p></div></section>
+<section><div class="wrap"><div class="pnav">
+<a href="olist-ecommerce.html"><small>← Previous project</small><b>Olist E-Commerce Analytics</b></a>
+<a class="next" href="cms-supplier-acceptance.html"><small>Next project →</small><b>Medicare Supplier Acceptance</b></a>
+</div></div></section>
+
+<footer><div class="wrap">
+<span>© 2026 Genet Tesfamichael · SQL &amp; Power BI Developer</span>
+<a href="#" data-portfolio>← Back to portfolio</a>
+</div></footer>
+<script src="../assets/links.js"></script>
+</body>
+</html>
