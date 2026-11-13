@@ -14,10 +14,10 @@ window.PORTFOLIO_LINKS = {
   portfolio: "",
 
   dashboards: {
-    "cms-supplier-acceptance": "",
-    "hospital-ehr-analytics": "",
-    "olist-ecommerce": "",
-    "sales-data-warehouse": ""
+    "cms-supplier-acceptance": "https://app.powerbi.com/view?r=eyJrIjoiYmY0YjhlZjYtNTJiMC00ZDRhLWFjMGQtNzNjNTc4YTVkNDg2IiwidCI6IjQxYmIxN2Y5LWE5NTktNGRjYS1iOTk5LTYyMzkwNDkwZjZkYSIsImMiOjJ9",
+    "hospital-ehr-analytics": "https://app.powerbi.com/view?r=eyJrIjoiMjc4OTc2M2EtODQ4My00M2EwLWFmMjEtOTg2Y2ZiMDY4YzFlIiwidCI6IjQxYmIxN2Y5LWE5NTktNGRjYS1iOTk5LTYyMzkwNDkwZjZkYSIsImMiOjJ9",
+    "olist-ecommerce": "https://app.powerbi.com/view?r=eyJrIjoiMGExZWI1ZTEtYzg5Ni00OGNhLTg0MTMtNGE0MzAwYmYyNWViIiwidCI6IjQxYmIxN2Y5LWE5NTktNGRjYS1iOTk5LTYyMzkwNDkwZjZkYSIsImMiOjJ9",
+    "sales-data-warehouse": "https://app.powerbi.com/view?r=eyJrIjoiYWY2ZDZhMTktMTYxMC00ODhhLThhOWEtNDI5YjM5YmQ2MDA4IiwidCI6IjQxYmIxN2Y5LWE5NTktNGRjYS1iOTk5LTYyMzkwNDkwZjZkYSIsImMiOjJ9"
   }
 };
 
